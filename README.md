@@ -32,11 +32,11 @@ typedef struct {
 
 - [x] `append(Array *arr, const void *value)` — add an element to the end, doubling capacity if full
 - [x] `remove_item(Array *arr, const void *value)` — remove all occurrences of a value
-- [x] `remove_at(Array *arr, int index)` — remove the element at a given index
-- [ ] `get(Array *arr, int index)` — return a pointer to the element at an index, with bounds checking
-- [ ] `set(Array *arr, int index, void *value)` — overwrite an element at an index
-- [ ] `contains(Array *arr, void *value)` — return 1 if value exists, 0 if not
-- [ ] `insert_at(Array *arr, int index, void *value)` — insert at a position, shifting everything after it right
+- [x] `remove_at(Array *arr, const size_t index)` — remove the element at a given index
+- [x] `get(Array *arr, const size_t index)` — return a pointer to the element at an index, with bounds checking
+- [x] `set(Array *arr, const size_t index, const void *value)` — overwrite an element at an index
+- [x] `contains(Array *arr, const void *value)` — return 1 if value exists, 0 if not
+- [x] `insert_at(Array *arr, const size_t index, const void *value)` — insert at a position, shifting everything after it right
 - [ ] `reverse(Array *arr)` — reverse the array in place
 - [ ] `index_of(Array *arr, void *value)` — return the index of the first match, -1 if not found
 - [ ] `sort(Array *arr, int (*cmp)(const void*, const void*))` — sort using a comparator function pointer
