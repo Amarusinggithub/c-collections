@@ -25,7 +25,6 @@ typedef struct {
 } Array;
 ```
 
-
 ---
 
 ## Functions TODO
@@ -37,17 +36,15 @@ typedef struct {
 - [x] `set(Array *arr, const size_t index, const void *value)` — overwrite an element at an index
 - [x] `contains(Array *arr, const void *value)` — return 1 if value exists, 0 if not
 - [x] `insert_at(Array *arr, const size_t index, const void *value)` — insert at a position, shifting everything after it right
-- [ ] `reverse(Array *arr)` — reverse the array in place
-- [ ] `index_of(Array *arr, void *value)` — return the index of the first match, -1 if not found
-- [ ] `sort(Array *arr, int (*cmp)(const void*, const void*))` — sort using a comparator function pointer
-- [ ] `map(Array *arr, void (*fn)(void*))` — apply a function to every element in place
-- [ ] `filter(Array *arr, int (*fn)(const void*))` — return a new array with only elements where the function returns true
-- [ ] `shrink_to_fit(Array *arr)` — realloc capacity down to match length, reclaiming unused memory
-
-
+- [x] `reverse(Array *arr)` — reverse the array in place
+- [x] `index_of(Array *arr, const void *value)` — return the index of the first match, -1 if not found
+- [x] `sort(Array *arr, int (*cmp)(const void*, const void*))` — sort using a comparator function pointer
+- [x] `map(Array *arr, void (*fn)(void*))` — apply a function to every element in place
+- [x] `filter(Array *arr, int (*fn)(const void*))` — return a new array with only elements where the function returns true
+- [x] `shrink_to_fit(Array *arr)` — realloc capacity down to match length, reclaiming unused memory
 
 ## Build & Ececute
 
 ```sh
-gcc src/main.c -o src/main && cd src && ./main
+gcc src/main.c src/dynarr.c -o src/main && cd src && ./main
 ```
