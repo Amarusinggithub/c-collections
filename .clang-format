@@ -1,0 +1,33 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 100
+PointerAlignment: Left
+
+# Brace style: opening brace on same line (K&R)
+BreakBeforeBraces: Attach
+
+# No collapsing functions or blocks onto a single line
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never
+
+# Indent case labels inside switch blocks
+IndentCaseLabels: true
+
+# No space after C-style casts: (char*)ptr not (char*) ptr
+SpaceAfterCStyleCast: false
+
+# Keep #include blocks sorted
+SortIncludes: true
+
+# Align trailing // comments in a column group
+AlignTrailingComments: true
+
+# Align = in consecutive assignment groups and #define blocks
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveMacros: Consecutive
+
+# Limit consecutive blank lines to one
+MaxEmptyLinesToKeep: 1
+...

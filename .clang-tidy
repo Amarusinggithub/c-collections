@@ -1,0 +1,25 @@
+---
+# C project — modernize-* is C++ only and must be excluded entirely
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone-*,
+  cert-*,
+  misc-*,
+  readability-*,
+  -cert-dcl16-c,
+  -readability-implicit-bool-conversion,
+  -readability-identifier-naming,
+  -readability-magic-numbers,
+  -misc-include-cleaner
+
+WarningsAsErrors: "bugprone-*,clang-analyzer-security.*,cert-err33-c"
+
+# Only lint project headers, not system headers
+HeaderFilterRegex: "include/.*"
+
+CheckOptions:
+  # Warn when 3+ consecutive parameters have the same type (easy to swap void* args)
+  - key: bugprone-easily-swappable-parameters.MinimumLength
+    value: "3"
+...

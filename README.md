@@ -43,8 +43,40 @@ typedef struct {
 - [x] `filter(Array *arr, int (*fn)(const void*))` — return a new array with only elements where the function returns true
 - [x] `shrink_to_fit(Array *arr)` — realloc capacity down to match length, reclaiming unused memory
 
-## Build & Ececute
+## Build & Execute
+
+### GCC (any platform)
 
 ```sh
-gcc src/main.c src/dynarr.c -o src/main && cd src && ./main
+gcc -I./include src/dynarr.c src/main.c -o src/main && cd src && ./main
 ```
+
+### CMake — Windows (PowerShell)
+
+```powershell
+cmake -B build -S .
+cmake --build build
+.\build\Debug\c_collections.exe
+```
+
+### CMake — WSL / Linux
+
+```sh
+cmake -B build -S . -DCMAKE_C_COMPILER=gcc
+cmake --build build
+./build/c_collections
+```
+
+### Choosing a build type
+
+The default build type is `Debug`. To switch, pass `-DCMAKE_BUILD_TYPE` when configuring:
+
+```sh
+# Debug (default) — includes debug symbols and sanitizers
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
+
+# Release — optimized, no sanitizers
+cmake -DCMAKE_BUILD_TYPE=Release -B build
+```
+
+If you have already configured the build directory and want to switch types, delete the `build/` folder first or pass the flag explicitly to override the cached value.
