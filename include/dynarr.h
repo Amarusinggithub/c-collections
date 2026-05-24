@@ -142,6 +142,6 @@ int map(ArrayPtr arr, const Function func);
                 0 if true and 1 if not true
  * @return void* Pointer to the new array
  */
-ArrayPtr filter(const ArrayPtr arr, const Predicate pred);
+ArrayPtr filter( ArrayPtr arr, const Predicate pred);
 
 #endif
