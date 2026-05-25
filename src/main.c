@@ -5,43 +5,25 @@
  * @copyright Copyright (c) 2026 Amar
  */
 
-#include "dynarr.h"
+#include "llist.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#define SIZE 10
 
 int main() {
 
-    Array arr = {0, SIZE, sizeof(int), NULL};
-    arr.items = (int*)calloc(arr.capacity, arr.element_size);
+    LinkListPtr list   = calloc(1, sizeof(LinkList));
+    list->element_size = (sizeof(int));
+    list->length       = 0;
+    list->head         = NULL;
+    list->tail         = NULL;
 
-    if (arr.items == NULL) {
-        perror("Failed to allocate memory on the heap!!");
-        return 1;
+    for (size_t i = 0; i < 10; i++) {
+        ll_append(list, &i);
     }
 
-    for (size_t i = 0; i < arr.capacity; i++) {
-        memcpy((char*)arr.items + (i * arr.element_size), &i, arr.element_size);
-        arr.length = i + 1;
-        printf("this is at arr[%zd]: %2d\n", i,
-               *(int*)((char*)arr.items + (i * arr.element_size)));
-    }
-    int num  = 2;
-    int num2 = 12;
+    ll_print_list(list);
+    ll_free_list(list);
 
-    printf("this is at arr[2]: %2d\n",
-           *(int*)((char*)arr.items + (num * arr.element_size)));
-    printf("This is the capacity of the array: %zd\n", arr.capacity);
-    printf("This is the length of the array: %zd\n", arr.length);
-    reverse(&arr);
-    printf("reverse:\n");
-    for (size_t i = 0; i < arr.length; i++) {
-        printf("this is at arr[%zd]: %2d\n", i,
-               *(int*)((char*)arr.items + (i * arr.element_size)));
-    }
-
-    free(arr.items);
     return 0;
 }

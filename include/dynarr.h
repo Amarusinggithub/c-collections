@@ -30,7 +30,7 @@ typedef int (*Predicate)(const void*);
  *
  * @param arr pointer to the array
  * @param value Pointer to the value to append
- * @return 0 on success or 1 on error
+ * @return int - 0 on success or 1 on error
  */
 int append(ArrayPtr arr, const void* value);
 
@@ -39,7 +39,7 @@ int append(ArrayPtr arr, const void* value);
  *
  * @param arr Pointer to the array
  * @param value pointer to the value to be removed from the array
- * @return 0 on success or 1 on error
+ * @return int - 0 on success or 1 on error
  */
 int remove_item(ArrayPtr arr, const void* value);
 
@@ -48,7 +48,7 @@ int remove_item(ArrayPtr arr, const void* value);
  *
  * @param arr Pointer to the array
  * @param index the index of the item to be removed from the array
- * @return 0 on success or 1 on error
+ * @return int - 0 on success or 1 on error
  */
 int remove_at(ArrayPtr arr, const size_t index);
 
@@ -67,7 +67,7 @@ void* get(ArrayPtr arr, const size_t index);
  * @param arr Pointer to arr
  * @param index the position to set the value to in the array
  * @param value the value to be set at the index
- * @return 0 fro success or 1 for error
+ * @return int - 0 fro success or 1 for error
  */
 int set(ArrayPtr arr, const size_t index, const void* value);
 
@@ -76,7 +76,8 @@ int set(ArrayPtr arr, const size_t index, const void* value);
  *
  * @param arr Pointer to the array
  * @param value the value to be checked  for
- * @return 0 if the value is found success, negative (-1) if the value is not found or 1 for error
+ * @return int - 0 if the value is found success, negative (-1) if the value is not
+ *         found or 1 for error
  */
 int contains(ArrayPtr arr, const void* value);
 
@@ -86,7 +87,7 @@ int contains(ArrayPtr arr, const void* value);
  * @param arr   Pointer to the array
  * @param index Position to insert at
  * @param value Pointer to the value to insert
- * @return 0 on success or 1 on error
+ * @return int - 0 on success or 1 on error
  */
 int insert_at(ArrayPtr arr, const size_t index, const void* value);
 
@@ -94,7 +95,7 @@ int insert_at(ArrayPtr arr, const size_t index, const void* value);
  * @brief reverse  the order of the array
  *
  * @param arr  Pointer to the array
- * @return ) for success or 1 for error
+ * @return int - 0 for success or 1 for error
  */
 int reverse(ArrayPtr arr);
 
@@ -103,14 +104,15 @@ int reverse(ArrayPtr arr);
  *
  * @param arr Pointer to the array
  * @param value Pointer to the given value
- * @return 1 for  error, the index of the value if successfully and -1 if it did not find the value
+ * @return int -1 for  error, the index of the value if successfully and -1 if it did
+ * not find the value
  */
 int index_of(ArrayPtr arr, const void* value);
 /**
  * @brief shrink the array capacity to fit the length
  *
  * @param arr Pointer to arr
- * @return 0 for success or 1 for error
+ * @return int -0 for success or 1 for error
  */
 int shrink_to_fit(ArrayPtr arr);
 
@@ -121,7 +123,7 @@ int shrink_to_fit(ArrayPtr arr);
  * @param cmp Function pointer that compares 2 value and return a int.
  *            less than 0 (negative int) if the first element is smaller,
  *            0 if they are equal or 1 if the first element is larger.
- * @return 0 forsuccess or 1 for error.
+ * @return int -0 forsuccess or 1 for error.
  */
 int sort(ArrayPtr arr, const Compare cmp);
 
@@ -130,7 +132,7 @@ int sort(ArrayPtr arr, const Compare cmp);
  *
  * @param arr Pointer to the array
  * @param fn Function pointer that do something with the value in the array.
- * @return 0 for success or 1 for error
+ * @return int - 0 for success or 1 for error
  */
 int map(ArrayPtr arr, const Function func);
 
@@ -143,5 +145,6 @@ int map(ArrayPtr arr, const Function func);
  * @return void* Pointer to the new array
  */
 ArrayPtr filter( ArrayPtr arr, const Predicate pred);
+
 
 #endif
