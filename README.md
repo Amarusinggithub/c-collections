@@ -125,17 +125,17 @@ typedef struct {
 } LinkedList;
 ```
 
-| Function | Description |
-| --- | --- |
-| `ll_append(list, value)` | Add a node to the end |
-| `ll_prepend(list, value)` | Add a node to the front |
-| `ll_remove(list, value)` | Remove the first node matching value |
-| `ll_get(list, index)` | Return a pointer to the data at an index |
-| `ll_insert_at(list, index, value)` | Insert a node at a given position |
-| `ll_contains(list, value)` | Return 1 if value exists, 0 if not |
-| `ll_reverse(list)` | Reverse the list in place |
-| `ll_length(list)` | Return the number of nodes |
-| `ll_free(list)` | Free all nodes and reset the list |
+| Function | Description 
+| --- | --- | --- |
+| `ll_append(list, value)` | Add a node to the end
+| `ll_prepend(list, value)` | Add a node to the front
+| `ll_remove(list, value)` | Remove the first node matching value
+| `ll_get(list, index)` | Return a pointer to the data at an index
+| `ll_insert_at(list, index, value)` | Insert a node at a given position
+| `ll_contains(list, value)` | Return 1 if value exists, 0 if not
+| `ll_reverse(list)` | Reverse the list in place
+| `ll_length(list)` | Return the number of nodes
+| `ll_free(list)` | Free all nodes and reset the list
 
 **Status:** in progress
 
