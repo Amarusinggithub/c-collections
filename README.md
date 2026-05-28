@@ -4,25 +4,27 @@ A from scratch implementation of common data structures in C, built as a learnin
 
 ---
 
-## Disclamer
+## Disclaimer
 
-All code within the src and include folders are hand written  by the author not AI. The code written in these folders are completed by the authors research,by utalizing the official docs, books, forums, youtube and blogs. AI was only use help guide the author in identifying bugs and logical errors and extending understanding of the different concepts covered. This is detailed in the [AGENTS.md](AGENTS.md).
+All code within the src and include folders are hand written by the author not AI. The code written in these folders are completed by the authors research. Through utilizing the official docs, books, forums, youtube and blogs. AI was only use help guide the author in identifying bugs and logical errors and extending their understanding of the different concepts covered. This is detailed in the [AGENTS.md](AGENTS.md).
 
-Here is a list of other files that were extented by AI, but not fully completed by AI:
+Here is a list of other files that were extended by AI, but not fully completed by AI:
 
 - .clang-tidy
 - .clang-format
 - CMakeLists.txt
 
-Here is a list of  files that were Completely AI Generated:
+Here is a list of files that were Completely AI Generated:
+
 - README.md (excluding this section)
 - AGENTS.MD
+
 ---
 
 ## Table of Contents
 
 - [C Collections](#c-collections)
-  - [Disclamer](#disclamer)
+  - [Disclaimer](#disclaimer)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Data Structures](#data-structures)
@@ -86,21 +88,21 @@ typedef struct {
 } Array;
 ```
 
-| Function | Description |
-| --- | --- |
-| `append(arr, value)` | Add an element to the end, doubling capacity if full |
-| `remove_item(arr, value)` | Remove all occurrences of a value |
-| `remove_at(arr, index)` | Remove the element at a given index |
-| `get(arr, index)` | Return a pointer to the element at an index, with bounds checking |
-| `set(arr, index, value)` | Overwrite an element at an index |
-| `contains(arr, value)` | Return 1 if value exists, 0 if not |
-| `insert_at(arr, index, value)` | Insert at a position, shifting everything after it right |
-| `reverse(arr)` | Reverse the array in place |
-| `index_of(arr, value)` | Return the index of the first match, -1 if not found |
-| `sort(arr, cmp)` | Sort using a comparator function pointer |
-| `map(arr, fn)` | Apply a function to every element in place |
-| `filter(arr, fn)` | Return a new array with only elements where fn returns true |
-| `shrink_to_fit(arr)` | Realloc capacity down to match length, reclaiming unused memory |
+| Function                       | Description                                                       |
+| ------------------------------ | ----------------------------------------------------------------- |
+| `append(arr, value)`           | Add an element to the end, doubling capacity if full              |
+| `remove_item(arr, value)`      | Remove all occurrences of a value                                 |
+| `remove_at(arr, index)`        | Remove the element at a given index                               |
+| `get(arr, index)`              | Return a pointer to the element at an index, with bounds checking |
+| `set(arr, index, value)`       | Overwrite an element at an index                                  |
+| `contains(arr, value)`         | Return 1 if value exists, 0 if not                                |
+| `insert_at(arr, index, value)` | Insert at a position, shifting everything after it right          |
+| `reverse(arr)`                 | Reverse the array in place                                        |
+| `index_of(arr, value)`         | Return the index of the first match, -1 if not found              |
+| `sort(arr, cmp)`               | Sort using a comparator function pointer                          |
+| `map(arr, fn)`                 | Apply a function to every element in place                        |
+| `filter(arr, fn)`              | Return a new array with only elements where fn returns true       |
+| `shrink_to_fit(arr)`           | Realloc capacity down to match length, reclaiming unused memory   |
 
 **Status:** complete
 
@@ -125,17 +127,17 @@ typedef struct {
 } LinkedList;
 ```
 
-| Function | Description 
-| --- | --- | --- |
-| `ll_append(list, value)` | Add a node to the end
-| `ll_prepend(list, value)` | Add a node to the front
-| `ll_remove(list, value)` | Remove the first node matching value
-| `ll_get(list, index)` | Return a pointer to the data at an index
-| `ll_insert_at(list, index, value)` | Insert a node at a given position
-| `ll_contains(list, value)` | Return 1 if value exists, 0 if not
-| `ll_reverse(list)` | Reverse the list in place
-| `ll_length(list)` | Return the number of nodes
-| `ll_free(list)` | Free all nodes and reset the list
+| Function                           | Description                              |
+| ---------------------------------- | ---------------------------------------- |
+| `ll_append(list, value)`           | Add a node to the end                    |
+| `ll_prepend(list, value)`          | Add a node to the front                  |
+| `ll_remove(list, value)`           | Remove the first node matching value     |
+| `ll_get(list, index)`              | Return a pointer to the data at an index |
+| `ll_insert_at(list, index, value)` | Insert a node at a given position        |
+| `ll_contains(list, value)`         | Return 1 if value exists, 0 if not       |
+| `ll_reverse(list)`                 | Reverse the list in place                |
+| `ll_length(list)`                  | Return the number of nodes               |
+| `ll_free(list)`                    | Free all nodes and reset the list        |
 
 **Status:** in progress
 
