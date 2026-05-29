@@ -47,7 +47,6 @@ Here is a list of files that were Completely AI Generated:
     - [Bloom Filter](#bloom-filter)
     - [HyperLogLog](#hyperloglog)
   - [Build \& Execute](#build--execute)
-    - [GCC (any platform)](#gcc-any-platform)
     - [CMake — Windows (PowerShell)](#cmake--windows-powershell)
     - [CMake — WSL / Linux](#cmake--wsl--linux)
     - [Choosing a build type](#choosing-a-build-type)
@@ -148,6 +147,15 @@ typedef struct {
 **Files:** `include/stack.h` · `src/stack.c`
 
 A LIFO (last-in, first-out) structure. Push onto the top, pop from the top. Can be backed by a dynamic array or linked list.
+
+| Function                   | Description                              |
+| -------------------------- | ---------------------------------------- |
+| `stack_push(stack, value)` | Add an element to the top                |
+| `stack_pop(stack)`         | Remove and return the element at the top |
+| `stack_peek(stack)`        | View the top element without removing it |
+| `stack_is_empty(stack)`    | Return true if the stack has no elements |
+| `stack_size(stack)`        | Return the number of elements            |
+| `stack_free(stack)`        | Free all memory                          |
 
 **Status:** planned
 
@@ -304,12 +312,6 @@ A probabilistic data structure that estimates how many unique items have been se
 ---
 
 ## Build & Execute
-
-### GCC (any platform)
-
-```sh
-gcc -I./include src/dynarr.c src/main.c -o src/main && cd src && ./main
-```
 
 ### CMake — Windows (PowerShell)
 
