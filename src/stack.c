@@ -116,6 +116,27 @@ STACK_ERROR_CODES stack_free(StackPtr stack) {
     free(stack);
     return STACK_RETURN_SUCCESS;
 }
+STACK_ERROR_CODES stack_clear(StackPtr stack) {
+    if (stack == NULL) {
+        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        return STACK_RETURN_ERROR;
+    }
+
+    NodePtr previous = NULL;
+    NodePtr current  = stack->top;
+    for (size_t i = 0; i < stack->length; i++) {
+        if (current == NULL) {
+            break;
+        }
+        free(current->value);
+        previous = current;
+        current  = current->next;
+        free(previous);
+    }
+    stack->top    = NULL;
+    stack->length = 0;
+    return STACK_RETURN_SUCCESS;
+}
 
 inline char* stack_errors_to_str(STACK_ERROR_CODES code) {
     switch (code) {

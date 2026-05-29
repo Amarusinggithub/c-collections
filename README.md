@@ -46,6 +46,7 @@ Here is a list of files that were Completely AI Generated:
     - [B+ Tree](#b-tree-1)
     - [Bloom Filter](#bloom-filter)
     - [HyperLogLog](#hyperloglog)
+    - [Skip List](#skip-list)
   - [Build \& Execute](#build--execute)
     - [CMake — Windows (PowerShell)](#cmake--windows-powershell)
     - [CMake — WSL / Linux](#cmake--wsl--linux)
@@ -165,7 +166,27 @@ A LIFO (last-in, first-out) structure. Push onto the top, pop from the top. Can 
 
 **Files:** `include/queue.h` · `src/queue.c`
 
-A FIFO (first-in, first-out) structure. Enqueue at the back, dequeue from the front.
+A FIFO (first-in, first-out) structure. Enqueue at the back, dequeue from the front. Backed by a singly linked list so both operations are O(1) with no shifting.
+
+```c
+typedef struct {
+    Node  *head;         // front of the queue — next to dequeue
+    Node  *tail;         // back of the queue — where new items go
+    size_t length;
+    size_t element_size;
+} Queue;
+```
+
+| Function                      | Description                                            |
+| ----------------------------- | ------------------------------------------------------ |
+| `queue_enqueue(queue, value)` | Add an element to the back                             |
+| `queue_dequeue(queue)`        | Remove and return the element at the front             |
+| `queue_peek(queue)`           | View the front element without removing it             |
+| `queue_is_empty(queue)`       | Return true if the queue has no elements               |
+| `queue_size(queue)`           | Return the number of elements                          |
+| `queue_contains(queue, value)`| Return 1 if value exists, 0 if not                     |
+| `queue_clear(queue)`          | Remove all elements, freeing each node                 |
+| `queue_free(queue)`           | Free all memory including the queue struct itself      |
 
 **Status:** planned
 
@@ -306,6 +327,14 @@ A probabilistic data structure that answers "have I seen this before?" using a b
 **Files:** `include/hll.h` · `src/hll.c`
 
 A probabilistic data structure that estimates how many unique items have been seen (cardinality) using a tiny fixed amount of memory — typically a few kilobytes regardless of how many items you process. It works by hashing each item and tracking the maximum number of leading zeros seen across buckets; statistically, more unique items produce longer runs of zeros. The estimate can be off by roughly 1-2% but uses orders of magnitude less memory than storing every unique item. Used in Redis (`PFADD`/`PFCOUNT`), BigQuery, and stream analytics pipelines.
+
+**Status:** planned
+
+### Skip List
+
+**Files:** `include/skiplist.h` · `src/skiplist.c`
+
+A probabilistic data structure built from multiple layers of linked lists. The bottom layer is a standard sorted linked list; each layer above it is a "fast lane" that skips over roughly half the nodes of the layer below. Search, insert, and delete all run in O(log n) expected time by dropping down to slower lanes only when needed. Provides the same asymptotic guarantees as a balanced BST without complex rotations — balance is maintained probabilistically by a coin flip on each insert.
 
 **Status:** planned
 

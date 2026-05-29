@@ -77,7 +77,15 @@ STACK_ERROR_CODES stack_is_empty(StackPtr stack);
 int64_t stack_size(StackPtr stack);
 
 /**
- * @brief free the stack nodes
+ * @brief clear the stack nodes
+ *
+ * @param stack Pointer to stack
+ * @return STACK_ERROR_CODES enum code
+ */
+STACK_ERROR_CODES stack_clear(StackPtr stack);
+
+/**
+ * @brief free the stack
  *
  * @param stack Pointer to stack
  * @return STACK_ERROR_CODES enum code
