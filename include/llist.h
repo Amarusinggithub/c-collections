@@ -96,7 +96,7 @@ NodePtr ll_get(LinkListPtr list, size_t index);
  * @param list Pointer to the list
  * @return int64_t -> length of list
  */
-inline int64_t ll_length(LinkListPtr list);
+int64_t ll_length(LinkListPtr list);
 
 /**
  * @brief checks if list contins the a node with the value
@@ -131,5 +131,5 @@ LL_ERROR_CODES ll_reverse(LinkListPtr list);
  * @param code LL_ERROR_CODES-> error code enum
  * @return char*
  */
-inline char* ll_errors_to_str(LL_ERROR_CODES code);
+char* ll_errors_to_str(LL_ERROR_CODES code);
 #endif

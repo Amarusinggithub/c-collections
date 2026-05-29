@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-add_executable(c_collections src/dynarr.c src/llist.c src/main.c)
+add_executable(c_collections src/dynarr.c src/llist.c src/main.c src/stack.c)
 target_include_directories(c_collections PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
