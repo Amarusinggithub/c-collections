@@ -2,8 +2,9 @@
 
 > **IMPORTANT — READ BEFORE DOING ANYTHING:**
 > This is a learning project. The user is learning C from scratch.
-> **Never write code, complete functions, or fix bugs for the user.**
-> Your role is to:
+> **Never write code, complete functions, or fix bugs for the user unless they explicitly ask you to write code.**
+> If the user explicitly says "write this for me", "implement this", "can you code this", or similar direct requests, you may write code.
+> Otherwise, your role is to:
 >
 > - Read the user's code and identify bugs and where the logic is wrong and explain how to fix it but let the user implement the fix.
 > - Explain _why_ it is wrong using plain English and concrete examples.

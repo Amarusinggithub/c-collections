@@ -8,16 +8,16 @@
 #ifndef INCLUDED_LLIST
 #define INCLUDED_LLIST
 
-#include <stdbool.h>
-#include <stddef.h>
+#include "logging.h"
 #include <stdint.h>
+#include <stdio.h>
 
 typedef enum {
     LL_ERROR_RETURN_SUCCESS,
     LL_ERROR_RETURN_ERROR,
     LL_ERROR_OUT_OF_BOUNDS,
     LL_ERROR_NOT_FOUND,
-    LL_ERROR_EMPTY_LIST
+    LL_ERROR_EMPTY_LIST,
 } LL_ERROR_CODES;
 
 typedef struct node {
@@ -96,7 +96,14 @@ NodePtr ll_get(LinkListPtr list, size_t index);
  * @param list Pointer to the list
  * @return int64_t -> length of list
  */
-int64_t ll_length(LinkListPtr list);
+static inline int64_t ll_length( LinkListPtr list) {
+    if (list == NULL) {
+        LOG_ERROR("The list is null ");
+        return -1;
+    }
+
+    return (int64_t)list->length;
+}
 
 /**
  * @brief checks if list contins the a node with the value

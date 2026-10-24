@@ -6,12 +6,10 @@
  */
 
 #include "llist.h"
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* ll_errors_to_str(LL_ERROR_CODES code) {
+char* ll_errors_to_str(const LL_ERROR_CODES code) {
     switch (code) {
         case LL_ERROR_RETURN_SUCCESS:
             return "Return Success";
@@ -31,21 +29,18 @@ char* ll_errors_to_str(LL_ERROR_CODES code) {
 LL_ERROR_CODES ll_append(LinkListPtr list, const void* value) {
 
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     if (value == NULL) {
-        (void)fprintf(stderr, "[ERROR] the value is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The value is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     NodePtr new_node = (NodePtr)calloc(1, sizeof(Node));
     if (new_node == NULL) {
-        (void)fprintf(stderr, "[ERROR] the new_node is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR(" the new_node is null ");
         return LL_ERROR_RETURN_ERROR;
     }
     new_node->data = NULL;
@@ -55,12 +50,11 @@ LL_ERROR_CODES ll_append(LinkListPtr list, const void* value) {
     //  data to the buffer to obey the ownership of value
     void* new_data = calloc(1, list->element_size);
     if (new_data == NULL) {
-        (void)fprintf(stderr, "[ERROR] the new_data is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The new_data is null");
         free(new_node); // free new node in the case that new data is null before return
         return LL_ERROR_RETURN_ERROR;
     }
-    memmove(new_data, value, list->element_size);
+    memmove_s(new_data,  list->element_size,value, list->element_size);
     new_node->data = new_data;
 
     if (list->head == NULL && list->length == 0) {
@@ -89,21 +83,18 @@ LL_ERROR_CODES ll_append(LinkListPtr list, const void* value) {
 
 LL_ERROR_CODES ll_prepend(LinkListPtr list, const void* value) {
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     if (value == NULL) {
-        (void)fprintf(stderr, "[ERROR] the value is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The value is null in file ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     NodePtr new_head = calloc(1, sizeof(Node));
     if (new_head == NULL) {
-        (void)fprintf(stderr, "[ERROR] the newNode is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The newNode is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
@@ -114,12 +105,11 @@ LL_ERROR_CODES ll_prepend(LinkListPtr list, const void* value) {
     //  data to the buffer to obey the ownership of value.
     void* new_data = calloc(1, list->element_size);
     if (new_data == NULL) {
-        (void)fprintf(stderr, "[ERROR] the new_head is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The new_head is null");
         free(new_head); // free new node in the case that new data is null before return
         return LL_ERROR_RETURN_ERROR;
     }
-    memmove(new_data, value, list->element_size);
+    memmove_s(new_data,  list->element_size,value, list->element_size);
     new_head->data = new_data;
 
     if (list->length == 0 && list->head == NULL) {
@@ -138,7 +128,7 @@ LL_ERROR_CODES ll_prepend(LinkListPtr list, const void* value) {
 LL_ERROR_CODES ll_free_list(LinkListPtr list) {
 
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in %s at %d ", __FILE__, __LINE__);
+        LOG_ERROR(" the list is null");
         return LL_ERROR_RETURN_ERROR;
     }
 
@@ -164,16 +154,14 @@ LL_ERROR_CODES ll_free_list(LinkListPtr list) {
 LL_ERROR_CODES ll_print_list(LinkListPtr list) {
 
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     NodePtr current = list->head;
     for (size_t i = 0; i < list->length; i++) {
         if (current->data != NULL) {
-            (void)fprintf(stdout, "this is the value of the node at inx# %zu is %d", i,
-                          *(int*)(current->data));
+            LOG_ERROR("This is the value of the node at idx# %zu is %d", i, *(int*)(current->data));
         }
         current = current->next;
     }
@@ -183,14 +171,12 @@ LL_ERROR_CODES ll_print_list(LinkListPtr list) {
 
 LL_ERROR_CODES ll_remove(LinkListPtr list, const void* value) {
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     if (value == NULL) {
-        (void)fprintf(stderr, "[ERROR] the value is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The value is null ");
         return LL_ERROR_RETURN_ERROR;
     }
     NodePtr current  = list->head;
@@ -253,8 +239,7 @@ LL_ERROR_CODES ll_remove(LinkListPtr list, const void* value) {
 
 NodePtr ll_get(LinkListPtr list, size_t index) {
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null id");
         return NULL;
     }
 
@@ -269,26 +254,14 @@ NodePtr ll_get(LinkListPtr list, size_t index) {
     return current;
 }
 
-int64_t ll_length(LinkListPtr list) {
-    if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
-        return -1;
-    }
-
-    return (int64_t)list->length;
-}
-
 LL_ERROR_CODES ll_contains(LinkListPtr list, const void* value) {
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     if (value == NULL) {
-        (void)fprintf(stderr, "[ERROR] the value is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The value is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
@@ -312,14 +285,12 @@ LL_ERROR_CODES ll_contains(LinkListPtr list, const void* value) {
 
 LL_ERROR_CODES ll_insert_at(LinkListPtr list, size_t idx, const void* value) {
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null ");
         return LL_ERROR_RETURN_ERROR;
     }
 
     if (value == NULL) {
-        (void)fprintf(stderr, "[ERROR] the value is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The value is null");
         return LL_ERROR_RETURN_ERROR;
     }
 
@@ -329,8 +300,7 @@ LL_ERROR_CODES ll_insert_at(LinkListPtr list, size_t idx, const void* value) {
 
     NodePtr new_node = calloc(1, sizeof(Node));
     if (new_node == NULL) {
-        (void)fprintf(stderr, "[ERROR] the new_node is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The new_node is null");
         return LL_ERROR_RETURN_ERROR;
     }
 
@@ -341,12 +311,11 @@ LL_ERROR_CODES ll_insert_at(LinkListPtr list, size_t idx, const void* value) {
     //  data to the buffer to obey the ownership of value.
     void* new_data = calloc(1, list->element_size);
     if (new_data == NULL) {
-        (void)fprintf(stderr, "[ERROR] the new_node is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The new_node is null");
         free(new_node); // free new node in the case that new data is null before return
         return LL_ERROR_RETURN_ERROR;
     }
-    memmove(new_data, value, list->element_size);
+    memmove_s(new_data, list->element_size, value, list->element_size);
     new_node->data = new_data;
 
     NodePtr current  = list->head;
@@ -395,8 +364,7 @@ LL_ERROR_CODES ll_insert_at(LinkListPtr list, size_t idx, const void* value) {
 
 LL_ERROR_CODES ll_reverse(LinkListPtr list) {
     if (list == NULL) {
-        (void)fprintf(stderr, "[ERROR] the list is null in file %s at line# %d", __FILE__,
-                      __LINE__);
+        LOG_ERROR("The list is null");
         return LL_ERROR_RETURN_ERROR;
     }
 

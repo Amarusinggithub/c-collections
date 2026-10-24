@@ -7,13 +7,14 @@
 
 #ifndef INCLUDED_STACK
 #define INCLUDED_STACK
+#include "logging.h"
 #include <stddef.h>
 #include <stdint.h>
 
 enum stack_error_codes {
     STACK_RETURN_SUCCESS,
     STACK_RETURN_ERROR,
-    STACK_RETURN_EMPTY
+    STACK_RETURN_EMPTY,
 
 };
 

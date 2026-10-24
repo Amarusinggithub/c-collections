@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 4.3)
 project(C_Collections)
 
 set(CMAKE_C_STANDARD 23)
@@ -10,7 +10,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-add_executable(c_collections src/dynarr.c src/llist.c src/main.c src/stack.c src/hashmap.c)
+add_executable(c_collections src/dynarr.c src/llist.c src/main.c src/stack.c src/hashmap.c
+        src/main.c)
 target_include_directories(c_collections PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

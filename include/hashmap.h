@@ -6,20 +6,18 @@
  */
 #ifndef INCLUDED_HASHMAP
 #define INCLUDED_HASHMAP
-#include <stdbool.h>
-#include <stddef.h>
+#include "logging.h"
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #define LOAD_FACTOR 0.75
 
-typedef enum {
+enum map_error_codes {
     MAP_ERROR_RETURN_SUCCESS,
     MAP_ERROR_RETURN_ERROR,
     MAP_ERROR_NOT_FOUND,
     MAP_ERROR_OUT_OF_BOUND,
-    MAP_ERROR_EMPTY_BUCKET
-} MAP_ERROR_CODES;
+    MAP_ERROR_EMPTY_BUCKET,
+};
 
 struct map {
     size_t element_size;
@@ -38,6 +36,7 @@ typedef struct map Map;
 typedef Map* MapPtr;
 typedef struct node Node;
 typedef Node* NodePtr;
+typedef enum map_error_codes MAP_ERROR_CODES;
 
 static inline char* map_error_to_str(const MAP_ERROR_CODES code) {
 
@@ -107,21 +106,16 @@ bool map_contains(const Map* map, const char* key, MAP_ERROR_CODES* err);
  * @brief return the length of the map
  *
  * @param map Pointer to the map
+ * @param err -> the error codes
  * @return size_t the length of the  map
  */
 static inline size_t map_size(const Map* map, MAP_ERROR_CODES* err) {
     if (err == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The err is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The err is null");
         return SIZE_MAX;
     }
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The Map is null");
         *err = MAP_ERROR_RETURN_ERROR;
         return (SIZE_MAX);
     }
@@ -134,22 +128,16 @@ static inline size_t map_size(const Map* map, MAP_ERROR_CODES* err) {
  * @brief checks if the map is empty
  *
  * @param map Pointer to the map
- * @return true-> if map is empty
- * @return false-> if map is not empty
+ * @param err -> the error codes
+ * @return bool -> if map is empty or not
  */
 static inline bool map_is_empty(const Map* map, MAP_ERROR_CODES* err) {
     if (err == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The err is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The err is null");
         return false;
     }
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The Map is null");
         *err = MAP_ERROR_RETURN_ERROR;
         return false;
     }

@@ -6,12 +6,12 @@
  */
 
 #include "hashmap.h"
-#include <stdint.h>
 #include <string.h>
 
 /**
  * @brief hash the key and return bucket index
  *
+ * @param cap
  * @param map pointer to the map
  * @param key the string key to be hashed
  * @return size_t the bucket index in the map
@@ -19,10 +19,7 @@
 static size_t map_hash(size_t cap, const char* key) {
 
     if (key == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The key is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The key is null");
         return (SIZE_MAX);
     }
 
@@ -30,27 +27,22 @@ static size_t map_hash(size_t cap, const char* key) {
     size_t factor     = 31;
     size_t key_length = strlen(key);
     for (size_t i = 0; i < key_length; i++) {
-        bucket_idx = ((bucket_idx % cap) + (((size_t)(unsigned char)key[i]) * factor) % cap) % cap;
+        bucket_idx = ((bucket_idx % cap) + ((((size_t)(unsigned char)key[i]) * factor) % cap)) % cap;
 
         factor = ((factor % INT16_MAX) * (31 % INT16_MAX)) % INT16_MAX;
     }
     return bucket_idx;
 }
 
-MapPtr map_create(size_t cap, size_t element_size, MAP_ERROR_CODES* err) {
+MapPtr map_create(const size_t cap, const size_t element_size, MAP_ERROR_CODES* err) {
     if (err == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The err is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The err is null");
+        *err = MAP_ERROR_RETURN_ERROR;
         return NULL;
     }
     MapPtr map = (MapPtr)calloc(1, sizeof(Map));
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The Map is null");
         *err = MAP_ERROR_RETURN_ERROR;
 
         return NULL;
@@ -65,10 +57,7 @@ MapPtr map_create(size_t cap, size_t element_size, MAP_ERROR_CODES* err) {
     map->element_size = element_size;
     map->buckets      = (void**)calloc(map->capacity, sizeof(void*));
     if (map->buckets == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The map->buckets is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The map->buckets is null");
         free(map);
         *err = MAP_ERROR_RETURN_ERROR;
         return NULL;
@@ -77,76 +66,54 @@ MapPtr map_create(size_t cap, size_t element_size, MAP_ERROR_CODES* err) {
     return map;
 }
 
-MAP_ERROR_CODES map_put(MapPtr map, const char* key, const void* value) {
+MAP_ERROR_CODES map_put( MapPtr map, const char* key, const void* value) {
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The Map is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     if (key == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The key is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The key is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     if (value == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The value is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The value is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     if (map->length != 0 && ((float)map->length) / (float)map->capacity >= LOAD_FACTOR) {
         MAP_ERROR_CODES error = map_resize(map, map->capacity * 2);
 
         if (error == MAP_ERROR_RETURN_ERROR) {
-#ifdef DEBUG
-            (void)fprintf(stderr, "[%s]  There was an error resizing map capacity in %s line# %d",
-                          map_error_to_str(error), __FILE__, __LINE__);
-#endif
-
-            return (error);
+            LOG_ERROR("There was an error resizing map capacity");
+            return error;
         }
     }
 
     NodePtr new_node = calloc(1, sizeof(Node));
     if (new_node == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The new_node is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The new_node is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     void* new_key = malloc(strlen(key) + 1);
     if (new_key == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The new_key is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The new_key is null");
         free(new_node);
-        return (MAP_ERROR_RETURN_ERROR);
+        return MAP_ERROR_RETURN_ERROR;
     }
-    strcpy(new_key, key);
+    strcpy_s(new_key, strlen(key) + 1, key);
     new_node->key = new_key;
 
     void* new_value = calloc(1, map->element_size);
     if (new_value == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The new_value is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The new_value is null");
         free(new_node->key);
         free(new_node);
-        return (MAP_ERROR_RETURN_ERROR);
+        return MAP_ERROR_RETURN_ERROR;
     }
-    memcpy(new_value, value, map->element_size);
+    memcpy_s(new_value, map->element_size, value, map->element_size);
     new_node->value = new_value;
     new_node->next  = NULL;
 
@@ -167,9 +134,9 @@ MAP_ERROR_CODES map_put(MapPtr map, const char* key, const void* value) {
             continue;
         }
 
-        if (current != NULL && strcmp(new_key, (current)->key) == 0) {
-            free((current)->value);
-            (current)->value = new_value;
+        if (current != NULL && strcmp(new_key, current->key) == 0) {
+            free(current->value);
+            current->value = new_value;
             free(new_key);
             free(new_node);
             break;
@@ -186,27 +153,19 @@ MAP_ERROR_CODES map_put(MapPtr map, const char* key, const void* value) {
 
 void* map_get(const Map* map, const char* key, MAP_ERROR_CODES* err) {
     if (err == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The err is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The err is null");
+        *err = MAP_ERROR_RETURN_ERROR;
         return NULL;
     }
 
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The Map is null");
         *err = MAP_ERROR_RETURN_ERROR;
         return NULL;
     }
 
     if (key == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The key is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The key is null");
         *err = MAP_ERROR_RETURN_ERROR;
         return NULL;
     }
@@ -244,31 +203,25 @@ void* map_get(const Map* map, const char* key, MAP_ERROR_CODES* err) {
 
 MAP_ERROR_CODES map_remove(MapPtr map, const char* key) {
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The Map is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     if (key == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The key is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The key is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     size_t bucket_idx = map_hash(map->capacity, key);
 
     if (bucket_idx >= map->capacity) {
-        return (MAP_ERROR_OUT_OF_BOUND);
+        return MAP_ERROR_OUT_OF_BOUND;
     }
 
     NodePtr previous = NULL;
     NodePtr current  = map->buckets[bucket_idx];
     if (current == NULL) {
-        return (MAP_ERROR_NOT_FOUND);
+        return MAP_ERROR_NOT_FOUND;
     }
 
     while (current != NULL) {
@@ -299,28 +252,19 @@ MAP_ERROR_CODES map_remove(MapPtr map, const char* key) {
 
 bool map_contains(const Map* map, const char* key, MAP_ERROR_CODES* err) {
     if (err == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The err is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The err is null");
         return false;
     }
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The Map is null");
         *err = MAP_ERROR_RETURN_ERROR;
-        return (false);
+        return false;
     }
 
     if (key == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The key is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
+        LOG_ERROR("The key is null");
         *err = MAP_ERROR_RETURN_ERROR;
-        return (false);
+        return false;
     }
 
     size_t bucket_idx = map_hash(map->capacity, key);
@@ -357,11 +301,8 @@ bool map_contains(const Map* map, const char* key, MAP_ERROR_CODES* err) {
 
 MAP_ERROR_CODES map_resize(MapPtr map, size_t new_cap) {
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The Map is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     size_t new_cap_t;
@@ -371,20 +312,17 @@ MAP_ERROR_CODES map_resize(MapPtr map, size_t new_cap) {
         new_cap_t = new_cap;
     }
 
-    void** new_buckets = (void**)calloc(new_cap_t, sizeof(void*));
+    auto  const new_buckets = (void**)calloc(new_cap_t, sizeof(void*));
     if (new_buckets == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The new_buckets is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The new_buckets is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     for (size_t i = 0; i < map->capacity; i++) {
         NodePtr map_bucket_current = map->buckets[i];
 
         while (map_bucket_current != NULL) {
-            size_t bucket_idx               = map_hash(new_cap_t, map_bucket_current->key);
+             size_t bucket_idx               = map_hash(new_cap_t, map_bucket_current->key);
             NodePtr map_bucket_current_next = map_bucket_current->next;
 
             if (new_buckets[bucket_idx] == NULL) {
@@ -415,7 +353,7 @@ MAP_ERROR_CODES map_resize(MapPtr map, size_t new_cap) {
     map->buckets  = new_buckets;
     map->capacity = new_cap_t;
 
-    return (MAP_ERROR_RETURN_SUCCESS);
+    return MAP_ERROR_RETURN_SUCCESS;
 }
 
 static inline void map_free_buckets(MapPtr map) {
@@ -436,11 +374,8 @@ static inline void map_free_buckets(MapPtr map) {
 
 MAP_ERROR_CODES map_clear(MapPtr map) {
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The Map is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     map_free_buckets(map);
@@ -451,11 +386,8 @@ MAP_ERROR_CODES map_clear(MapPtr map) {
 
 MAP_ERROR_CODES map_free(MapPtr map) {
     if (map == NULL) {
-#ifdef DEBUG
-        (void)fprintf(stderr, "[%s] The Map is null in %s line# %d",
-                      map_error_to_str(MAP_ERROR_RETURN_ERROR), __FILE__, __LINE__);
-#endif
-        return (MAP_ERROR_RETURN_ERROR);
+        LOG_ERROR("The Map is null");
+        return MAP_ERROR_RETURN_ERROR;
     }
 
     map_free_buckets(map);

@@ -7,22 +7,21 @@
 
 #include "stack.h"
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 STACK_ERROR_CODES stack_push(StackPtr stack, const void* value) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return STACK_RETURN_ERROR;
     }
     if (value == NULL) {
-        (void)fprintf(stderr, "The value is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The value is null");
         return STACK_RETURN_ERROR;
     }
-    NodePtr new_top = calloc(1, sizeof(Node));
+     NodePtr new_top = calloc(1, sizeof(Node));
     if (new_top == NULL) {
-        (void)fprintf(stderr, "The new_top is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The new_top is null");
         return STACK_RETURN_ERROR;
     }
     new_top->next  = NULL;
@@ -30,11 +29,11 @@ STACK_ERROR_CODES stack_push(StackPtr stack, const void* value) {
 
     void* new_data = calloc(1, stack->element_size);
     if (new_data == NULL) {
-        (void)fprintf(stderr, "The new_data is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The new_data is null");
         free(new_top);
         return STACK_RETURN_ERROR;
     }
-    memmove(new_data, value, stack->element_size);
+    memmove_s(new_data, stack->element_size, value, stack->element_size);
     new_top->value = new_data;
 
     new_top->next = stack->top;
@@ -46,7 +45,7 @@ STACK_ERROR_CODES stack_push(StackPtr stack, const void* value) {
 
 NodePtr stack_pop(StackPtr stack) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return NULL;
     }
 
@@ -63,7 +62,7 @@ NodePtr stack_pop(StackPtr stack) {
 
 void* stack_peek(StackPtr stack) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return NULL;
     }
 
@@ -75,7 +74,7 @@ void* stack_peek(StackPtr stack) {
 
 STACK_ERROR_CODES stack_is_empty(StackPtr stack) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return STACK_RETURN_ERROR;
     }
 
@@ -87,7 +86,7 @@ STACK_ERROR_CODES stack_is_empty(StackPtr stack) {
 
 int64_t stack_size(StackPtr stack) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return -1;
     }
 
@@ -96,7 +95,7 @@ int64_t stack_size(StackPtr stack) {
 
 STACK_ERROR_CODES stack_free(StackPtr stack) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return STACK_RETURN_ERROR;
     }
 
@@ -116,9 +115,10 @@ STACK_ERROR_CODES stack_free(StackPtr stack) {
     free(stack);
     return STACK_RETURN_SUCCESS;
 }
+
 STACK_ERROR_CODES stack_clear(StackPtr stack) {
     if (stack == NULL) {
-        (void)fprintf(stderr, "The stack is null in %s line %d.", __FILE__, __LINE__);
+        LOG_ERROR("The stack is null");
         return STACK_RETURN_ERROR;
     }
 
